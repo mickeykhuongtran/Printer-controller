@@ -1,0 +1,60 @@
+{
+  "id": "rfid-matrix24-text6-check",
+  "name": "RFID Matrix full EPC - Text last 6",
+  "symbolConfigVersion": 2,
+  "settings": {
+    "widthMm": 60,
+    "heightMm": 40,
+    "gapMm": 3,
+    "dpi": 300,
+    "targetPrinterModel": "zt610r",
+    "copies": 1,
+    "speed": 4,
+    "darkness": 10,
+    "serial": { "enabled": false, "start": 1, "step": 1, "pad": 4, "prefix": "" },
+    "rfid": {
+      "enabled": false,
+      "chip": "epc_96",
+      "epcBits": 96,
+      "format": "H",
+      "retries": 3,
+      "block": 2,
+      "words": 6,
+      "data": "",
+      "readEnabled": true,
+      "readBank": "EPC",
+      "readFieldName": "rfid_read",
+      "zebraEpcReadMode": "pc",
+      "zebraModel": "zt610r",
+      "zebraUsePrinterSettings": true
+    }
+  },
+  "elements": [
+    {
+      "id": "full-title", "kind": "text", "text": "FULL EPC:",
+      "pos": { "x": 3, "y": 3 }, "size": { "w": 54, "h": 3 },
+      "rotation": 0, "font": "D", "scaleX": 1, "scaleY": 1, "fontSizeMm": 2.5
+    },
+    {
+      "id": "full-epc", "kind": "text", "text": "{rfid_read}",
+      "pos": { "x": 3, "y": 7 }, "size": { "w": 54, "h": 4 },
+      "rotation": 0, "font": "D", "scaleX": 1, "scaleY": 1, "fontSizeMm": 2.5
+    },
+    {
+      "id": "suffix-title", "kind": "text", "text": "LAST 6:",
+      "pos": { "x": 3, "y": 16 }, "size": { "w": 30, "h": 4 },
+      "rotation": 0, "font": "D", "scaleX": 1, "scaleY": 1, "fontSizeMm": 2.5
+    },
+    {
+      "id": "suffix-epc", "kind": "text", "text": "{rfid_read}", "rfidReadLastChars": 6,
+      "pos": { "x": 3, "y": 22 }, "size": { "w": 30, "h": 6 },
+      "rotation": 0, "font": "D", "scaleX": 1, "scaleY": 1, "fontSizeMm": 4
+    },
+    {
+      "id": "matrix-full-epc", "kind": "datamatrix", "data": "{rfid_read}",
+      "pos": { "x": 38, "y": 14 }, "size": { "w": 18, "h": 18 },
+      "rotation": 0, "sizeMode": "manual", "magnification": 6,
+      "minModuleMm": 0.15
+    }
+  ]
+}

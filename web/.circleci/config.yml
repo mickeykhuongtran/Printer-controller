@@ -1,0 +1,89 @@
+version: 2.1
+
+# Required env vars (set as project context / env vars in CircleCI):
+#   DOCKERHUB_USERNAME — Docker Hub login username
+#   DOCKERHUB_TOKEN    — Docker Hub access token (NOT the account password)
+#
+# Image: docker.io/nextwaves/nextwaves-label
+# Tag policy:
+#   - main branch       → :latest, :<short-sha>
+#   - tag v*  (e.g. v1.2.3) → :1.2.3, :latest
+
+executors:
+  docker-builder:
+    machine:
+      image: ubuntu-2204:current
+      docker_layer_caching: true
+    resource_class: medium
+
+jobs:
+  build-and-push:
+    executor: docker-builder
+    environment:
+      IMAGE: nextwaves/nextwaves-label
+    steps:
+      - checkout
+
+      - run:
+          name: Compute image tags
+          command: |
+            set -euo pipefail
+            SHA="${CIRCLE_SHA1:0:7}"
+            TAGS=()
+            if [ -n "${CIRCLE_TAG:-}" ]; then
+              # Strip leading "v" from semver tags so the image tag is "1.2.3".
+              VERSION="${CIRCLE_TAG#v}"
+              TAGS+=("${VERSION}" "latest")
+            elif [ "${CIRCLE_BRANCH:-}" = "main" ]; then
+              TAGS+=("latest" "${SHA}")
+            else
+              echo "Unsupported trigger; refusing to push." >&2
+              exit 1
+            fi
+            # Persist for subsequent steps.
+            echo "export IMAGE_TAGS='${TAGS[*]}'" >> "$BASH_ENV"
+            echo "Will push: ${TAGS[*]}"
+
+      - run:
+          name: Log in to Docker Hub
+          command: |
+            set -euo pipefail
+            echo "${DOCKERHUB_TOKEN}" \
+              | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
+
+      - run:
+          name: Build image
+          command: |
+            set -euo pipefail
+            BUILD_ARGS=()
+            for t in $IMAGE_TAGS; do
+              BUILD_ARGS+=("-t" "${IMAGE}:${t}")
+            done
+            docker build "${BUILD_ARGS[@]}" .
+
+      - run:
+          name: Push image
+          command: |
+            set -euo pipefail
+            for t in $IMAGE_TAGS; do
+              docker push "${IMAGE}:${t}"
+            done
+
+      - run:
+          name: Logout
+          when: always
+          command: docker logout || true
+
+workflows:
+  build-and-push:
+    jobs:
+      - build-and-push:
+          # Tags are not picked up unless explicitly listed in filters.
+          filters:
+            branches:
+              only:
+                - main
+            tags:
+              only: /^v\d+\.\d+\.\d+(-[A-Za-z0-9.\-]+)?$/
+          context:
+            - dockerhub

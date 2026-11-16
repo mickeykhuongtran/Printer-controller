@@ -1,0 +1,240 @@
+% !TeX program = xelatex
+% NEXTWAVES - Editable wall process diagram, A3 landscape.
+% UTF-8. Recommended engine: XeLaTeX or LuaLaTeX.
+% pdfLaTeX fallback is included (requires the standard Vietnamese/T5 fonts).
+% Import this file into Prism. Add nextwaves-logo.png for the original logo.
+% The document also compiles without that image, using a text wordmark.
+%
+% EDITING GUIDE
+% 1. Versions and colours are defined below.
+% 2. All coordinates are PDF points (bp), measured from the TOP LEFT.
+%    Increase x to move right; increase y to move down.
+% 3. Text stays editable: look for \PosterText and \BulletText.
+% 4. Change card positions/sizes through \StepCard; edit arrows at the end.
+% 5. If adding text, enlarge the card or adjust its spacing to avoid overlap.
+% This is the LaTeX source of poster Rev01, not a new process revision.
+
+\documentclass{article}
+\usepackage[paperwidth=420mm,paperheight=297mm,margin=0pt]{geometry}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T5]{fontenc}
+  \usepackage[vietnamese]{babel}
+  \usepackage{lmodern}
+  \renewcommand{\familydefault}{\sfdefault}
+\else
+  \usepackage{fontspec}
+  \defaultfontfeatures{Ligatures=TeX}
+  \IfFontExistsTF{Arial}{\setsansfont{Arial}}{\setsansfont{TeX Gyre Heros}}
+  \renewcommand{\familydefault}{\sfdefault}
+\fi
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+% ---------- Versions: change only when issuing an approved revision ----------
+\newcommand{\PosterCode}{WI-PRD-RFID-003-P01}
+\newcommand{\PosterRevision}{Rev01}
+\newcommand{\SOPCode}{SOP-PRD-RFID-003}
+\newcommand{\SOPRevision}{Rev06}
+\newcommand{\AppVersion}{3.3.0}
+\newcommand{\ConnectorVersion}{0.7.0}
+\newcommand{\DraftDate}{16/10/2026}
+\newcommand{\ExampleRollID}{NW-4520-261016-001\_01}
+
+% ---------- Colours ----------
+\definecolor{Navy}{HTML}{15394B}
+\definecolor{Ink}{HTML}{23343E}
+\definecolor{Blue}{HTML}{167DA7}
+\definecolor{Teal}{HTML}{168F8C}
+\definecolor{Green}{HTML}{3A9461}
+\definecolor{Amber}{HTML}{A34B13}
+\definecolor{BlueTint}{HTML}{EDF6FA}
+\definecolor{TealTint}{HTML}{EDF7F5}
+\definecolor{GreenTint}{HTML}{EFF7F0}
+\definecolor{AmberTint}{HTML}{FFF4E7}
+\definecolor{AmberBorder}{HTML}{DDB38A}
+\definecolor{CardBorder}{HTML}{C6D8DC}
+\definecolor{LaneBorder}{HTML}{C9DADD}
+\definecolor{Muted}{HTML}{526670}
+\definecolor{PaleText}{HTML}{DCEAF0}
+\definecolor{Cyan}{HTML}{2EB9CC}
+
+% A3 landscape expressed in PDF points (1 bp = 1/72 inch).
+\newcommand{\PageW}{1190.55118}
+\newcommand{\PageH}{841.88976}
+
+% ---------- Drawing helpers ----------
+% \PosterText[alignment]{x}{top}{width}{font size}{line spacing}{colour}{text}
+\newcommand{\PosterText}[8][left]{%
+  \pgfmathsetlengthmacro{\PosterTextWidth}{(#4)*1bp}%
+  \node[anchor=north west,inner sep=0pt,outer sep=0pt,
+    text width=\PosterTextWidth,align=#1,text=#7,
+    font=\sffamily\fontsize{#5bp}{#6bp}\selectfont]
+    at ({#2},{#3}) {\strut #8};%
+}
+% \BulletText{x}{top}{width}{font size}{line spacing}{text}
+\newcommand{\BulletText}[6]{%
+  \fill[Teal] ({#1+3},{#2+8}) circle[radius=2bp];
+  \PosterText{#1+14}{#2}{#3-14}{#4}{#5}{Ink}{#6}%
+}
+% \RoundBox{x}{top}{width}{height}{radius}{fill colour}{border colour}
+\newcommand{\RoundBox}[7]{%
+  \draw[fill=#6,draw=#7,line width=.8bp,rounded corners=#5bp]
+    (#1,#2) rectangle ({#1+#3},{#2+#4});%
+}
+% \Lane{x}{width}{accent}{background}{heading}
+\newcommand{\Lane}[5]{%
+  \RoundBox{#1}{122}{#2}{565}{12}{#4}{LaneBorder}
+  \path[fill=#3,rounded corners=10bp]
+    (#1,122) rectangle ({#1+#2},155);
+  \PosterText[center]{#1+8}{130}{#2-16}{15.2}{19.5}{white}{\textbf{#5}}%
+}
+% \StepCard{number}{title}{x}{top}{width}{height}{accent}
+\newcommand{\StepCard}[7]{%
+  \RoundBox{#3}{#4}{#5}{#6}{10}{white}{CardBorder}
+  \path[fill=#7,rounded corners=2bp]
+    ({#3+1},{#4+1}) rectangle ({#3+#5-1},{#4+8});
+  \fill[#7] ({#3+29},{#4+33}) circle[radius=17bp];
+  \node[anchor=center,inner sep=0pt,text=white,
+    font=\sffamily\bfseries\fontsize{21bp}{26bp}\selectfont]
+    at ({#3+29},{#4+33}) {#1};
+  \PosterText{#3+56}{#4+21}{#5-68}{15.8}{20.2}{Ink}{\textbf{#2}}%
+}
+\tikzset{flow arrow/.style={draw=Navy,line width=1.8bp,
+  -{Latex[length=7bp,width=5bp]}}}
+
+\begin{document}
+\null
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.north west)},x=1bp,y=-1bp]
+
+% ======================= HEADER =======================
+\fill[white] (0,0) rectangle (\PageW,\PageH);
+\fill[Navy] (0,0) rectangle (\PageW,105);
+\IfFileExists{nextwaves-logo.png}{%
+  \node[anchor=north west,inner sep=0pt] at (27,14)
+    {\includegraphics[width=146bp,height=85bp,keepaspectratio]{nextwaves-logo.png}};
+}{%
+  % Standalone fallback when importing main.tex without the optional logo.
+  \PosterText[center]{26}{32}{153}{26}{32}{white}{Nextwaves}
+  \PosterText[center]{26}{68}{153}{10}{13}{PaleText}{INDUSTRIES}
+}
+\PosterText{205}{18}{960}{28}{35.8}{white}{\textbf{QUY TRÌNH IN TEM RFID}}
+\PosterText{205}{57}{960}{15}{19.2}{white}{%
+  2.500 GOOD/cuộn\quad |\quad Zebra ZT610R / ZD621R\quad |\quad TCP/IP}
+\PosterText{205}{82}{960}{11}{14.1}{PaleText}{%
+  Năm bước vận hành\quad\textbullet\quad App \AppVersion
+  \quad\textbullet\quad Connector \ConnectorVersion}
+
+% ======================= THREE LANES =======================
+\Lane{28}{315}{Blue}{BlueTint}{A. CHUẨN BỊ}
+\Lane{361}{451}{Teal}{TealTint}{B. IN VÀ KIỂM MẪU}
+\Lane{830}{332.55118}{Green}{GreenTint}{C. CHỐT VÀ BÀN GIAO}
+
+% ======================= A / STEP 1 =======================
+\StepCard{1}{CHỌN ĐÚNG VIỆC}{40}{170}{291}{190}{Blue}
+\BulletText{55}{226}{261}{14}{17.9}{%
+  Template đã duyệt; Job ID và mã cuộn (Roll ID).}
+\BulletText{55}{270}{261}{14}{17.9}{%
+  Đúng máy, vật tư, lot; dọn tem và lệnh của việc cũ.}
+\BulletText{55}{314}{261}{14}{17.9}{%
+  Setup khi cần; hoàn tất trước khi reset.}
+
+% ======================= A / STEP 2 =======================
+\StepCard{2}{RESET ĐẦU CUỘN}{40}{391}{291}{222}{Blue}
+\PosterText[center]{56}{450}{259}{20}{25.6}{Blue}{\textbf{VALID = 0\quad |\quad VOID = 0}}
+\BulletText{55}{489}{261}{14}{17.9}{Reset một lần cho cuộn thành phẩm mới.}
+\BulletText{55}{533}{261}{14}{17.9}{Thay giấy/ribbon hoặc in bù: giữ counter và Roll ID.}
+\PosterText{55}{578}{261}{13}{16.6}{Ink}{\textbf{Bấm ``Bắt đầu cuộn'' trên app.}}
+\PosterText{43}{628}{286}{11.5}{15.2}{Ink}{%
+  Ví dụ mã cuộn\\
+  \textbf{\ExampleRollID}\\
+  Một cuộn có thể gồm nhiều lần in/bù.}
+
+% ======================= B / STEP 3 =======================
+\StepCard{3}{IN VÀ KIỂM ĐÚNG MỐC}{373}{170}{427}{251}{Teal}
+\BulletText{388}{226}{397}{14}{17.9}{Đặt đúng số cần in/bù trên app.}
+\BulletText{388}{252}{397}{14}{17.9}{%
+  Không loại tem: đối chiếu số cần bù với \textbf{2.500 - VALID}. Lệch thì dừng đối soát.}
+\PosterText{402}{296}{383}{11.7}{15}{Muted}{%
+  App không tự dừng theo counter trên màn hình máy.}
+\PosterText[center]{388}{335}{397}{17}{21.8}{Teal}{%
+  \textbf{ĐẦU\enspace\textbullet\enspace GIỮA NGẪU NHIÊN\enspace\textbullet\enspace CUỐI}}
+\PosterText{390}{367}{393}{13.7}{18}{Ink}{%
+  Reader đọc đúng chip, đối chiếu chữ/mã theo template.\\
+  \textbf{Mẫu đạt, không hỏng: giữ trên cuộn.}}
+
+% ======================= INTERRUPTION CHECK =======================
+\RoundBox{373}{438}{427}{230}{10}{AmberTint}{AmberBorder}
+\PosterText[center]{386}{450}{401}{14.8}{19}{Amber}{\textbf{SAU MỌI THAY ĐỔI ẢNH HƯỞNG}}
+\PosterText[center]{386}{474}{401}{21}{26.9}{Amber}{\textbf{KIỂM NGAY TEM ĐẦU}}
+\PosterText[center]{389}{510}{395}{13.2}{17.3}{Ink}{%
+  Mở đầu in, thay giấy/ribbon, kẹt/nối giấy,\\
+  hiệu chuẩn hoặc khôi phục mạng/nguồn.}
+\PosterText{390}{551}{393}{13.4}{18}{Ink}{%
+  Tem đầu VOID: kiểm tem VALID đầu tiên tiếp theo.\\
+  Lỗi đầu in/giấy/ribbon: hủy lệnh, xử lý buffer; tạo lượt mới.\\
+  Mẫu FAIL: \textbf{DỪNG - GIỮ VÙNG NGHI NGỜ - BÁO PHỤ TRÁCH.}}
+\PosterText{388}{628}{397}{11.2}{14}{Ink}{%
+  \textbf{Mẫu đạt mới tiếp tục.} Không Resume lượt đã lỗi.\\
+  Không mặc định thử/loại 10 tem.}
+
+% ======================= C / STEP 4 =======================
+\StepCard{4}{ĐỦ CUỘN VÀ ĐỐI SOÁT}{842}{170}{308.55118}{224}{Green}
+\PosterText[center]{858}{228}{276.55118}{22}{28.2}{Green}{\textbf{VALID = 2.500}}
+\PosterText[center]{858}{263}{276.55118}{12.3}{16}{Ink}{%
+  Cuộn bình thường: counter liên tục,\\
+  không loại tem đã tính VALID, mẫu đạt.}
+\BulletText{857}{307}{278.55118}{13.2}{16.9}{%
+  App đủ 2.500 EPC giữ lại, không trùng; lưu đối soát từng lần in.}
+\PosterText{871}{348}{264.55118}{12.1}{16}{Ink}{%
+  VOID ghi riêng, không trừ vào VALID.\\
+  Có tem loại hoặc lệch số: xử lý ngoại lệ.}
+
+% ======================= C / STEP 5 =======================
+\StepCard{5}{CHỐT VÀ BÀN GIAO}{842}{431}{308.55118}{237}{Green}
+\BulletText{857}{487}{278.55118}{13.7}{17.5}{%
+  Chọn chiều tháo; chốt cuộn và bấm ``Xuất CSV cuộn''.}
+\BulletText{857}{530}{278.55118}{13.7}{17.5}{%
+  Dán nhãn lõi: cùng Roll ID, GOOD, VOID giữ, chiều tháo.}
+\BulletText{857}{573}{278.55118}{13.7}{17.5}{%
+  Upload workspace, mở kiểm đúng file; bàn giao kho/người nhận.}
+\PosterText{858}{616}{276.55118}{11.1}{14.2}{Ink}{%
+  Nếu chưa upload được: giữ bản local và ghi chờ upload theo quy định phòng in.}
+
+% ======================= FLOW ARROWS =======================
+\draw[flow arrow] (185,363) -- (185,386);
+\draw[flow arrow] (333,503) -- (350,503) -- (350,203) -- (370,203);
+\draw[flow arrow] (802,203) -- (837,203);
+\draw[flow arrow] (990,398) -- (990,425);
+
+% ======================= RULES AND DOCUMENT CONTROL =======================
+\fill[Navy] (0,707) rectangle (\PageW,\PageH);
+\PosterText{28}{720}{1134.55118}{13}{16.6}{white}{\textbf{BỐN ĐIỀU PHẢI NHỚ}}
+\foreach \x/\num in {28/01,311.638/02,595.276/03,878.914/04}{%
+  \fill[Cyan] ({\x+12},758) circle[radius=12bp];
+  \node[anchor=center,inner sep=0pt,text=Navy,
+    font=\sffamily\bfseries\fontsize{10bp}{12bp}\selectfont]
+    at ({\x+12},758) {\num};
+}
+\PosterText{59}{748}{247.6}{11.4}{14.6}{white}{\textbf{ĐÚNG ID VÀ TEMPLATE}}
+\PosterText{342.638}{748}{247.6}{11.4}{14.6}{white}{\textbf{KHÔNG RESET GIỮA CUỘN}}
+\PosterText{626.276}{748}{247.6}{11.4}{14.6}{white}{\textbf{LỖI: DỪNG VÀ GIỮ HÀNG}}
+\PosterText{909.914}{748}{247.6}{11.4}{14.6}{white}{\textbf{CSV VÀ NHÃN LÕI CÙNG ID}}
+\PosterText[center]{28}{776}{1134.55118}{10.7}{13.7}{white}{%
+  \textbf{\PosterCode\quad |\quad \PosterRevision\quad |\quad
+  THEO \SOPCode\ \SOPRevision\quad |\quad SOẠN \DraftDate}}
+\PosterText[center]{28}{795}{1134.55118}{10.6}{13.6}{PaleText}{%
+  Hiệu lực: \rule{100bp}{0.4bp}\quad\textbullet\quad
+  Người duyệt: \rule{100bp}{0.4bp}\quad\textbullet\quad Thay bản cũ khi ban hành}
+\PosterText[center]{28}{813}{1134.55118}{8.8}{11.3}{PaleText}{%
+  Bản nhắc việc tại máy; điều kiện chốt, xử lý HOLD và kiểm soát hồ sơ thực hiện theo SOP \SOPRevision.}
+
+\end{scope}
+\end{tikzpicture}
+\end{document}

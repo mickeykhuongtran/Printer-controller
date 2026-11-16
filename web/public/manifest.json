@@ -1,0 +1,45 @@
+{
+    "id": "/",
+    "name": "ZbrePrinter",
+    "short_name": "ZbrePrinter",
+    "description": "Design and print barcode, QR, and RFID labels via Zebra ZPL.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "any",
+    "theme_color": "#0a0a0a",
+    "background_color": "#ffffff",
+    "icons": [
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "launch_handler": {
+        "client_mode": "navigate-existing"
+    },
+    "file_handlers": [
+        {
+            "action": "/?source=file-handler",
+            "accept": {
+                "application/vnd.nextwaves.label+json": [".nwl"]
+            },
+            "icons": [
+                {
+                    "src": "/icon-192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ],
+            "launch_type": "single-client"
+        }
+    ]
+}

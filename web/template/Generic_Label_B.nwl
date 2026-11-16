@@ -1,0 +1,233 @@
+{
+  "symbolConfigVersion": 2,
+  "id": "usr_tpl_mqkemh52_0v63no",
+  "name": "Generic Label B",
+  "settings": {
+    "widthMm": 60,
+    "heightMm": 21,
+    "gapMm": 5,
+    "dpi": 203,
+    "copies": 1,
+    "speed": 4,
+    "darkness": 10,
+    "printMode": "thermal_transfer",
+    "sensorMode": 2,
+    "startOffsetDots": 0,
+    "rowOffsetDots": 0,
+    "codePage": 850,
+    "serial": {
+      "enabled": false,
+      "start": 1,
+      "step": 1,
+      "pad": 4,
+      "prefix": ""
+    },
+    "rfid": {
+      "enabled": true,
+      "chip": "epc_96",
+      "epcBits": 96,
+      "format": "H",
+      "retries": 5,
+      "block": 2,
+      "words": 6,
+      "data": "{field_rfid}",
+      "fieldName": "field_rfid",
+      "zebraModel": "auto",
+      "zebraUsePrinterSettings": true,
+      "zebraPositionMode": "calibrated",
+      "zebraEpcReadMode": "pc"
+    }
+  },
+  "elements": [
+    {
+      "id": "text_mqkdi5qr_79vxdv",
+      "kind": "text",
+      "pos": {
+        "x": 17,
+        "y": 1
+      },
+      "size": {
+        "w": 42,
+        "h": 3
+      },
+      "text": "{field_1}",
+      "font": "D",
+      "scaleX": 1,
+      "scaleY": 1,
+      "rotation": 0,
+      "fontSource": "system",
+      "fontFamily": "System Sans",
+      "fontSizeMm": 2.5,
+      "wrapMode": "none",
+      "fitMode": "clip",
+      "fontWeight": 400
+    },
+    {
+      "id": "text_mqkdl4ub_zms6cu",
+      "kind": "text",
+      "pos": {
+        "x": 17,
+        "y": 4
+      },
+      "size": {
+        "w": 42,
+        "h": 11
+      },
+      "text": "{field_2}",
+      "font": "D",
+      "scaleX": 1,
+      "scaleY": 1,
+      "rotation": 0,
+      "fontSource": "system",
+      "fontFamily": "System Sans",
+      "fontSizeMm": 2.5,
+      "wrapMode": "word",
+      "fitMode": "clip"
+    },
+    {
+      "id": "qr_mqkdl80j_bne72h",
+      "kind": "qr",
+      "pos": {
+        "x": 1,
+        "y": 1
+      },
+      "size": {
+        "w": 15,
+        "h": 15
+      },
+      "data": "{field_qr}",
+      "ecc": "M",
+      "cell": 3,
+      "sizeMode": "manual",
+      "magnification": 3,
+      "quietZoneModules": 4,
+      "minModuleMm": 0.33,
+      "version": 0,
+      "mask": 8,
+      "qrType": "enhanced",
+      "mode": "mixing",
+      "textAlignment": "none",
+      "textEncoding": "utf8"
+    },
+    {
+      "id": "text_mqkdlu20_rylrnt",
+      "kind": "text",
+      "pos": {
+        "x": 1,
+        "y": 15
+      },
+      "size": {
+        "w": 13.333333333333332,
+        "h": 4.2
+      },
+      "text": "{field_5}",
+      "font": "D",
+      "scaleX": 1,
+      "scaleY": 1,
+      "rotation": 0,
+      "fontSource": "system",
+      "fontFamily": "System Sans",
+      "fontSizeMm": 2,
+      "wrapMode": "word",
+      "fitMode": "clip",
+      "align": "center"
+    },
+    {
+      "id": "text_mqkdm4rf_mv9f1o",
+      "kind": "text",
+      "pos": {
+        "x": 18,
+        "y": 18
+      },
+      "size": {
+        "w": 39.99999999999999,
+        "h": 3.1500000000000004
+      },
+      "text": "{field_3}",
+      "font": "D",
+      "scaleX": 1,
+      "scaleY": 1,
+      "rotation": 0,
+      "fontSource": "system",
+      "fontFamily": "System Sans",
+      "fontSizeMm": 2,
+      "wrapMode": "none",
+      "fitMode": "clip"
+    },
+    {
+      "id": "text_mqkdn8yf_roqkg9",
+      "kind": "text",
+      "pos": {
+        "x": 18,
+        "y": 15
+      },
+      "size": {
+        "w": 38.666666666666664,
+        "h": 2.1
+      },
+      "text": "{field_4}",
+      "font": "D",
+      "scaleX": 1,
+      "scaleY": 1,
+      "rotation": 0,
+      "fontSource": "system",
+      "fontFamily": "System Sans",
+      "fontSizeMm": 2,
+      "wrapMode": "none",
+      "fitMode": "clip"
+    }
+  ],
+  "dataFeed": {
+    "columns": [
+      {
+        "id": "col_step",
+        "name": "step",
+        "formula": "=ROW()",
+        "system": true
+      },
+      {
+        "id": "col_mqkdidbt_1c5kv0",
+        "name": "field_2"
+      },
+      {
+        "id": "col_mqkdidmj_cuqon1",
+        "name": "field_3"
+      },
+      {
+        "id": "col_mqkdjtdw_lmxerd",
+        "name": "field_4"
+      },
+      {
+        "id": "col_mqkdjtrf_u3hyjg",
+        "name": "field_qr"
+      },
+      {
+        "id": "col_mqkdju44_q72gsa",
+        "name": "field_1"
+      },
+      {
+        "id": "col_mqkdk95e_9hkbc0",
+        "name": "field_5"
+      },
+      {
+        "id": "col_generic_field_rfid",
+        "name": "field_rfid"
+      }
+    ],
+    "rows": [
+      {
+        "id": "row_mqkeqgig_pimaus",
+        "cells": {
+          "col_mqkdidbt_1c5kv0": "Sample product name",
+          "col_mqkdidmj_cuqon1": "2028-12-31",
+          "col_mqkdjtdw_lmxerd": "LOT001",
+          "col_mqkdjtrf_u3hyjg": "https://example.com/qr/ABC001",
+          "col_mqkdju44_q72gsa": "ABC001",
+          "col_mqkdk95e_9hkbc0": "Unit",
+          "col_generic_field_rfid": "000000000000000000000001"
+        }
+      }
+    ]
+  },
+  "builtIn": false
+}

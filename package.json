@@ -1,0 +1,101 @@
+{
+  "name": "zbre-printer-app",
+  "version": "3.9.2",
+  "private": true,
+  "description": "Installed Windows desktop shell for ZbrePrinter",
+  "main": "electron/main.cjs",
+  "author": {
+    "name": "Nextwaves"
+  },
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "build:connector": "node scripts/build-connector.cjs",
+    "prepare:web": "node scripts/prepare-web.cjs",
+    "prepare:desktop": "npm run build:connector && npm run prepare:web && npm run verify:bundle",
+    "verify:bundle": "node scripts/verify-bundle.cjs",
+    "verify:packed": "node scripts/verify-packed.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "test:spool-ui": "electron build/smoke-spool-ui.cjs",
+    "test:spool-reverse-ui": "electron build/smoke-spool-ui.cjs --reverse",
+    "test:editor-ui": "electron build/test-editor-performance.cjs",
+    "test:rfid-text-ui": "electron build/test-rfid-text-ui.cjs",
+    "test:image-rendering": "electron build/test-image-rendering.cjs",
+    "test:image-ui": "electron build/test-image-ui.cjs",
+    "test:rotation-rendering": "electron build/test-rotation-rendering.cjs",
+    "test:rotation-ui": "electron build/test-rotation-ui.cjs",
+    "start": "electron .",
+    "pack:win": "npm run prepare:desktop && electron-builder --win dir --x64 && npm run verify:packed",
+    "dist:win": "npm run prepare:desktop && electron-builder --win nsis --x64 && npm run verify:packed",
+    "test:tcp-pause-ui": "electron build/smoke-tcp-pause-ui.cjs",
+    "test:tcp-cancel-ui": "electron build/smoke-tcp-cancel-ui.cjs",
+    "test:rfid-capture-ui": "electron build/test-production-roll-ui.cjs",
+    "test:production-roll-ui": "electron build/test-production-roll-ui.cjs",
+    "test:counter-lifecycle-ui": "electron build/test-counter-lifecycle-ui.cjs",
+    "test:fleet-ui": "electron build/test-fleet-ui.cjs"
+  },
+  "devDependencies": {
+    "electron": "43.2.0",
+    "electron-builder": "26.11.1"
+  },
+  "build": {
+    "appId": "com.nextwaves.zbreprinter",
+    "productName": "ZbrePrinter",
+    "executableName": "ZbrePrinter",
+    "asar": true,
+    "npmRebuild": false,
+    "compression": "normal",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "bundle/web",
+        "to": "web"
+      },
+      {
+        "from": "bundle/connector",
+        "to": "connector"
+      },
+      {
+        "from": "bundle/runtime-manifest.json",
+        "to": "runtime-manifest.json"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/ZbrePrinter.png",
+      "artifactName": "ZbrePrinter-App-Setup-${version}-${arch}.${ext}",
+      "requestedExecutionLevel": "asInvoker",
+      "signExts": [
+        "!ZbrePrinterLocalPrintAgent-windows-x64.exe",
+        "!ZbrePrinterLocalPrintAgent-windows-arm64.exe"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "ZbrePrinter",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true
+    }
+  }
+}

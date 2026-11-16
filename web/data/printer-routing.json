@@ -1,0 +1,32 @@
+{
+  "agentUrl": "http://127.0.0.1:17917",
+  "aliases": {
+    "tem_loai_a": {
+      "label": "Tem loai A",
+      "printerName": "Zebra ZT610R",
+      "portName": "USB001",
+      "templatePath": "template/Generic_Label_A.nwl",
+      "modelId": "zt610r",
+      "targetPrinterModel": "zt610r",
+      "dpi": 300
+    },
+    "tem loai a": {
+      "label": "Tem loai A",
+      "printerName": "Zebra ZT610R",
+      "portName": "USB001",
+      "templatePath": "template/Generic_Label_A.nwl",
+      "modelId": "zt610r",
+      "targetPrinterModel": "zt610r",
+      "dpi": 300
+    },
+    "tem_loai_b": {
+      "label": "Tem loai B",
+      "printerName": "",
+      "portName": "",
+      "templatePath": "template/Generic_Label_B.nwl",
+      "modelId": "auto",
+      "targetPrinterModel": "auto",
+      "dpi": 203
+    }
+  }
+}

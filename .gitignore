@@ -1,0 +1,43 @@
+node_modules/
+bundle/
+# Installers are published as GitHub Release assets, not Git blobs.
+dist/
+out/
+*.log
+
+# Generated QA output, Chromium profiles, and historical build snapshots.
+/build/calibration-qa/
+/build/spool-qa/
+/build/spool-reverse-qa/
+/build/editor-qa/
+/build/rfid-text-qa/
+/build/rfid-capture-qa/
+/build/image-qa/
+/build/rotation-qa/
+/build/tcp-pause-qa/
+/build/tcp-cancel-qa/
+/build/v3-before-calibration/
+/build/*-qa/
+/build/qa-*/
+/build/before-*/
+/build/recovery-*/
+/build/review-*/
+/build/*-diagnostic-*/
+/sop_nextwaves/_work/
+
+# Local runtime state and generated web/connector output.
+/web/data/*
+!/web/data/printer-routing.json
+
+# Local configuration and credentials.
+.env
+.env.*
+!.env.example
+*.pem
+*.pfx
+*.p12
+
+# Local editor and operating-system files.
+.DS_Store
+Thumbs.db
+.idea/

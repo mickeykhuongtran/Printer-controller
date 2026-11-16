@@ -1,0 +1,14 @@
+^XA
+^CI28
+^PW812
+^LL406
+^LH0,0
+^FO24,24^GB764,358,4^FS
+^FO50,55^A0N,44,44^FDTCP/IP 9100 TEST^FS
+^FO50,125^A0N,30,30^FDZbrePrinter - RAW ZPL^FS
+^FO50,175^A0N,26,26^FDNetwork print path: OK^FS
+^FO50,225^A0N,24,24^FDNo RFID data is written by this test.^FS
+^FO600,80^BQN,2,4^FDLA,TCP_TEST^FS
+^FO50,315^A0N,22,22^FDCheck IP, port, driver and media settings.^FS
+^PQ1,0,1,N
+^XZ

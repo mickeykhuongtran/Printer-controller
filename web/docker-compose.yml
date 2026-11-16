@@ -1,0 +1,18 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nextwaves/nextwaves-label:latest
+    container_name: nextwaves-label
+    restart: unless-stopped
+    ports:
+      - "9999:9999"
+    environment:
+      NODE_ENV: production
+      PORT: 9999
+      HOSTNAME: 0.0.0.0
+      NEXT_TELEMETRY_DISABLED: 1
+      NEXTWAVES_SERVER_TCP: enabled
+      NEXTWAVES_SERVER_TCP_PORTS: 9100
+      NEXTWAVES_SERVER_TCP_HOSTS: 192.168.50.50
